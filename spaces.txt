@@ -1,0 +1,2 @@
+LastName FirstName Email FavoriteColor 3/3/3223
+Arandela audy myemail@gmail.com yellow 5/6/1987
