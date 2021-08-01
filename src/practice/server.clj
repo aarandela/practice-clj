@@ -1,20 +1,12 @@
 (ns practice.server
   (:require 
     [org.httpkit.server :as server]
-    [compojure.core :refer :all]
-    [compojure.route :as route]
-    [ring.middleware.defaults :refer :all])
+    [ring.middleware.defaults :refer :all]
+    [practice.api :refer [app-routes]]
+    [clojure.pprint :as pp]
+    [clojure.string :as str]
+    [clojure.data.json :as json])
   (:gen-class))
-
-; Simple Body Page
-(defn some-text [req]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "Hello World"})
-
-(defroutes app-routes
-  (GET "/" [] some-text)
-  (route/not-found "Error, page not found!"))
 
 (defn web-server
   "This is our entry point"
