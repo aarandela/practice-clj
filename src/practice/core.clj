@@ -2,11 +2,12 @@
   (:require
    [clojure.pprint :refer [print-table]]
    [clojure.string :as string]
+   [practice.server :as server]
    [practice.util :as util])
   (:gen-class))
 
 (defn determine-and-format 
-  "Takes in a file and determines what delimeter it uses, then formats it to a sequence of maps"
+  "Takes in a string and determines what delimeter it uses, then formats it to a sequence of maps"
   [file-contents]
   {:pre [(string? file-contents)]}
   (let [file-contents-vec (string/split-lines file-contents)]
@@ -78,18 +79,20 @@
       (print-table (:output-3 coll)))))
   
 
-(defn -main
+(defn show-file-contents
   "Takes as input a file with a set of records and outputs the set of records sorted"
   ([file]
-   (-main file nil))
+   (show-file-contents file nil))
   ([file column-to-sort]
    (let [file-contents (slurp file)
          formatted-file-contents (determine-and-format file-contents)
          sorted-columns (sort-by-column formatted-file-contents column-to-sort)]
      (show-output sorted-columns column-to-sort))))
 
+(defn -main
+  []
+  (println "Initializing Application...")
+  (server/web-server))
 
 (comment
-  (-main "./pipes.txt" "1")
-  (-main "./commas.csv")
-  (-main "./spaces.txt"))
+  (-main))
