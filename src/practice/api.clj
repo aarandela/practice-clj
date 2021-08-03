@@ -16,7 +16,7 @@
         sorted-records (file-content/show-file-contents file "email")]
     {:status  200
      :headers {"Content-Type" "text/json"}
-     :body    (json/write-str sorted-records)}))
+     :body (with-out-str (json/pprint sorted-records))}))
 
 ;; GET /records/birthdate - returns records sorted by birthdate
 (defn get-dob [{:keys [params] :as req}]
@@ -24,7 +24,7 @@
         sorted-records (file-content/show-file-contents file "birth date")]
     {:status  200
      :headers {"Content-Type" "text/json"}
-     :body    (json/write-str sorted-records)}))
+     :body    (with-out-str (json/pprint sorted-records))}))
 
 ;; GET /records/birthdate - returns records sorted by birthdate
 (defn get-name [{:keys [params] :as req}]
@@ -32,7 +32,7 @@
         sorted-records (file-content/show-file-contents file "last name")]
     {:status  200
      :headers {"Content-Type" "text/json"}
-     :body    (json/write-str sorted-records)}))
+     :body    (with-out-str (json/pprint sorted-records))}))
 
 (defn add-record [{:keys [params] :as req}]
   (let [content-to-add (:new-line params)
