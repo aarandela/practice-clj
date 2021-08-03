@@ -9,21 +9,22 @@
   "Takes in a string and determines what delimeter it uses, then formats it to a sequence of maps"
   [file-contents]
   {:pre [(string? file-contents)]}
-  (let [file-contents-vec (string/split-lines file-contents)]
+  (let [file-contents-vec (string/split-lines file-contents)
+        delimeter (util/determine-delimeter file-contents)]
     (cond
-      (string/includes? file-contents "|")
+      (= delimeter "PIPE")
       (->> file-contents-vec 
            (map #(string/split % #" \| "))
            (util/convert-to-map)
            (util/format-and-replace-dob))
       
-      (string/includes? file-contents ",")
+      (= delimeter "COMMA")
       (->> file-contents-vec
            (map #(string/split % #", "))
            (util/convert-to-map)
            (util/format-and-replace-dob))
       
-      (string/includes? file-contents " ")
+      (= delimeter "SPACE")
       (->> file-contents-vec
            (map #(string/split % #" "))
            (util/convert-to-map)
@@ -89,3 +90,23 @@
          sorted-columns (sort-by-column formatted-file-contents column-to-sort)]
      (show-output sorted-columns column-to-sort)
      sorted-columns)))
+
+(defn determine-file
+  [delimeter]
+  (cond
+    (= delimeter "PIPE")
+    "pipes.txt"
+    (= delimeter "COMMA")
+    "commas.csv"
+    (= delimeter "SPACE")
+    "spaces.txt"
+    :else nil))
+
+(defn append-to-file
+  "Adds new line to a file"
+  [filename s]
+  (spit filename (apply str "\n" s) :append true))
+
+(comment 
+  (spit "pipes.txt" (apply str "\n" "ln | fn | email | fav | 2/2/3000" ) :append true))
+         

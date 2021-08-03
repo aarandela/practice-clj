@@ -23,6 +23,17 @@
   (map #(apply assoc {} 
                (interleave [:last-name :first-name :email :fav-color :dob] %)) coll))
 
+(defn determine-delimeter
+  [s]
+  (cond
+    (string/includes? s "|")
+    "PIPE"
+    (string/includes? s ",")
+    "COMMA"
+    (string/includes? s " ")
+    "SPACE"
+    :else nil))
+
 (comment 
   (format-dob "05/05/1098")
   (format-dob "5/5/2000")
