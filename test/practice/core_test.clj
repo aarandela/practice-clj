@@ -1,11 +1,13 @@
 (ns practice.core-test
   (:require [clojure.test :refer [deftest is testing run-all-tests]]
-            [practice.file-content :refer [output-1-comparator determine-and-format]]
+            [practice.file-content :refer [output-1-comparator parse-str-delimeter]]
             [practice.util :refer [format-dob convert-to-map format-and-replace-dob]]))
 
-(deftest a-test
-  (testing "test"
-    (is (= 1 1))))
+(def commas-str "last, first, email, color, 02/03/2000")
+(def pipes-str "last | first | email | color | 02/03/2000")
+(def spaces-str "last first email color 02/03/2000")
+(def invalid-delimeter-str "last-first-email-color-02/03/2000")
+(def seq-vec '(["last" "first" "email" "color" "02/03/2000"]))
 
 (def data-model '({:last-name "last" 
                    :first-name "first" 
@@ -19,9 +21,10 @@
     (is (thrown? java.lang.AssertionError 
                  (format-dob "invalid")))
     
-    (is (= (convert-to-map '(["last" "first" "email" "color" "02/03/2000"]))
+    (is (= (convert-to-map seq-vec)
            data-model)) 
     (is (not (seq (convert-to-map nil))))
+    (is (not (seq (convert-to-map []))))
     
     (is (= (format-and-replace-dob data-model) 
            '({:last-name "last", :first-name "first", :email "email", :fav-color "color", :dob "2/03/2000"})))))
@@ -33,7 +36,15 @@
     (is (= (output-1-comparator ["A" "A"] ["B" "B"])
            1))
     (is (thrown? java.lang.AssertionError
-                 (determine-and-format nil)))))
+                 (parse-str-delimeter nil)))
+    (is (= (parse-str-delimeter commas-str) 
+           seq-vec))
+    (is (= (parse-str-delimeter pipes-str) 
+           seq-vec))
+    (is (= (parse-str-delimeter spaces-str) 
+           seq-vec))
+    (is (= (parse-str-delimeter invalid-delimeter-str) 
+           []))))
 
 (comment
   (run-all-tests))

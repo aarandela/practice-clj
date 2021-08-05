@@ -10,7 +10,7 @@
        (.format (java.text.SimpleDateFormat. "M/dd/yyyy"))))
 
 (defn format-and-replace-dob 
-  "Takes in a collection and replaces dob with the formatted dob"
+  "Takes in a sequence of maps and replaces dob with the formatted dob"
   [coll]
   (map (fn [e]
          (let [old-dob (:dob e)] 
@@ -33,10 +33,3 @@
     (string/includes? s " ")
     "SPACE"
     :else nil))
-
-(comment 
-  (format-dob "05/05/1098")
-  (format-dob "5/5/2000")
-  (def converted (convert-to-map '(["last" "first" "email" "color" "02/03/2000"])))
-  (format-and-replace-dob converted))
-         

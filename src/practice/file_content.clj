@@ -5,8 +5,8 @@
    [practice.util :as util]))
   
 
-(defn determine-and-format 
-  "Takes in a string and determines what delimeter it uses, then formats it to a sequence of maps"
+(defn parse-str-delimeter 
+  "Takes in a string and determines what delimeter it uses and returns a sequence of vectors"
   [file-contents]
   {:pre [(string? file-contents)]}
   (let [file-contents-vec (string/split-lines file-contents)
@@ -14,38 +14,37 @@
     (cond
       (= delimeter "PIPE")
       (->> file-contents-vec 
-           (map #(string/split % #" \| "))
-           (util/convert-to-map)
-           (util/format-and-replace-dob))
+           (map #(string/split % #" \| ")))
       
       (= delimeter "COMMA")
       (->> file-contents-vec
-           (map #(string/split % #", "))
-           (util/convert-to-map)
-           (util/format-and-replace-dob))
+           (map #(string/split % #", ")))
       
       (= delimeter "SPACE")
       (->> file-contents-vec
-           (map #(string/split % #" "))
-           (util/convert-to-map)
-           (util/format-and-replace-dob))
+           (map #(string/split % #" ")))
       
-      :else {})))
-      
+      :else [])))
+
+(defn sort-direction
+  [direction s1 s2]
+  (if (= direction :ascending)
+    (compare (string/lower-case s1) (string/lower-case s2))
+    (compare (string/lower-case s2) (string/lower-case s1))))
 
 (defn output-1-comparator
   "Takes in the juxt values, [:email :last-name], and compares whether it should be ascending or descending"
   [coll1 coll2]
   (if (= (first coll1) (first coll2))
-    (compare (string/lower-case coll1) (string/lower-case coll2)) ;; ascending
-    (compare (string/lower-case coll2) (string/lower-case coll1)))) ;; descending
+    (sort-direction :ascending coll1 coll2) 
+    (sort-direction :descending coll1 coll2)))
   
 (defn sort-by-column
   [file-contents column]
   (let [by-email (sort-by (juxt :email :last-name) #(output-1-comparator %1 %2) file-contents)
         by-dob (sort-by :dob file-contents)
         by-last-name (sort-by #(-> % :last-name string/lower-case)
-                              #(compare (string/lower-case %2) (string/lower-case %1))
+                              #(sort-direction :ascending %1 %2)
                               file-contents)]
     (cond
       (or (= column "email") (= column "1"))
@@ -86,7 +85,9 @@
    (show-file-contents file nil))
   ([file sort-mode]
    (let [file-contents (slurp file)
-         formatted-file-contents (determine-and-format file-contents)
+         parsed-file-contents (parse-str-delimeter file-contents)
+         vecs->maps (util/convert-to-map parsed-file-contents)
+         formatted-file-contents (util/format-and-replace-dob vecs->maps)
          sorted-columns (sort-by-column formatted-file-contents sort-mode)]
      (show-output sorted-columns sort-mode)
      sorted-columns)))

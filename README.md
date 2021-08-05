@@ -15,6 +15,11 @@ Some TODO items:
 
 ## Usage
 
+```sh
+# run test when developing
+lein test
+```
+
 To use the CLI `lein run filename sort-mode`
 
 ```sh

@@ -39,7 +39,7 @@
         delimeter (util/determine-delimeter content-to-add)
         filename (file-content/determine-file delimeter)]
      (file-content/append-to-file filename content-to-add)
-     {:status  200
+     {:status  201
       :headers {"Content-Type" "text/json"}
       :body    (json/write-str {:message "success"})}))
 
