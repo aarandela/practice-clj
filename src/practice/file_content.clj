@@ -95,11 +95,11 @@
   [delimeter]
   (cond
     (= delimeter "PIPE")
-    "pipes.txt"
+    "./records/pipes.txt"
     (= delimeter "COMMA")
-    "commas.csv"
+    "./records/commas.csv"
     (= delimeter "SPACE")
-    "spaces.txt"
+    "./records/spaces.txt"
     :else nil))
 
 (defn append-to-file

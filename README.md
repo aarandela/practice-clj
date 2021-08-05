@@ -1,7 +1,9 @@
 # practice
 
 Practice on doing some backend Clojure. Simple skeleton of what a backend might look like.
+
 Used `lein new app practice` to get a template set up
+
 I first started working on taking in different files to display. This is in `file_contents.clj` and `util.clj`.
 Then I wrote some tests to verify the logic that was being done.
 Getting a simple server started was the next step in practicing this backend clojure, then writing a small REST API.
