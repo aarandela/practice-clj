@@ -84,11 +84,11 @@
    Returns the data for API"
   ([file]
    (show-file-contents file nil))
-  ([file column-to-sort]
+  ([file sort-mode]
    (let [file-contents (slurp file)
          formatted-file-contents (determine-and-format file-contents)
-         sorted-columns (sort-by-column formatted-file-contents column-to-sort)]
-     (show-output sorted-columns column-to-sort)
+         sorted-columns (sort-by-column formatted-file-contents sort-mode)]
+     (show-output sorted-columns sort-mode)
      sorted-columns)))
 
 (defn determine-file
@@ -105,8 +105,4 @@
 (defn append-to-file
   "Adds new line to a file"
   [filename s]
-  (spit filename (apply str "\n" s) :append true))
-
-(comment 
-  (spit "pipes.txt" (apply str "\n" "ln | fn | email | fav | 2/2/3000" ) :append true))
-         
+  (spit filename (apply str "\n" s) :append true)) 

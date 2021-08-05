@@ -12,7 +12,7 @@
 
 ;; GET /records/email - returns records sorted by email
 (defn get-email [{:keys [params] :as req}]
-  (let [file (or (:file params) "pipes.txt")
+  (let [file (or (:file params) "./records/pipes.txt")
         sorted-records (file-content/show-file-contents file "email")]
     {:status  200
      :headers {"Content-Type" "text/json"}
@@ -20,7 +20,7 @@
 
 ;; GET /records/birthdate - returns records sorted by birthdate
 (defn get-dob [{:keys [params] :as req}]
-  (let [file (or (:file params) "pipes.txt")
+  (let [file (or (:file params) "./records/pipes.txt")
         sorted-records (file-content/show-file-contents file "birth date")]
     {:status  200
      :headers {"Content-Type" "text/json"}
@@ -28,7 +28,7 @@
 
 ;; GET /records/birthdate - returns records sorted by birthdate
 (defn get-name [{:keys [params] :as req}]
-  (let [file (or (:file params) "pipes.txt")
+  (let [file (or (:file params) "./records/pipes.txt")
         sorted-records (file-content/show-file-contents file "last name")]
     {:status  200
      :headers {"Content-Type" "text/json"}

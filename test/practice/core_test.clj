@@ -1,6 +1,6 @@
 (ns practice.core-test
   (:require [clojure.test :refer [deftest is testing run-all-tests]]
-            [practice.core :refer [output-1-comparator determine-and-format]]
+            [practice.file-content :refer [output-1-comparator determine-and-format]]
             [practice.util :refer [format-dob convert-to-map format-and-replace-dob]]))
 
 (deftest a-test
@@ -26,8 +26,8 @@
     (is (= (format-and-replace-dob data-model) 
            '({:last-name "last", :first-name "first", :email "email", :fav-color "color", :dob "2/03/2000"})))))
 
-(deftest core
-  (testing "functions in core ns"
+(deftest file-contents
+  (testing "functions in file-content ns"
     (is (= (output-1-comparator ["A" "A"] ["A" "B"])
            -1))
     (is (= (output-1-comparator ["A" "A"] ["B" "B"])
